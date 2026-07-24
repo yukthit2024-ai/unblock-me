@@ -11,6 +11,7 @@
         android:id="@+id/tvAbout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:text="About Text"
         android:textSize="18sp"
         android:gravity="center"
