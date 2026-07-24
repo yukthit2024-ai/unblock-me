@@ -59,6 +59,13 @@ public class LevelSelectActivity extends AppCompatActivity {
                     // convertView.setEnabled(false); 
                 }
 
+                TextView tickMark = convertView.findViewById(R.id.tickMark);
+                if (SolutionManager.hasSolution(packName, levels.get(position).levelNumber)) {
+                    tickMark.setVisibility(View.VISIBLE);
+                } else {
+                    tickMark.setVisibility(View.GONE);
+                }
+
                 convertView.setOnClickListener(v -> {
                     Intent intent = new Intent(LevelSelectActivity.this, GameActivity.class);
                     // Pass packName down to GameActivity
