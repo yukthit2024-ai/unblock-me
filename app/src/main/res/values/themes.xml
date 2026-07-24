@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme -->
-    <style name="Theme.UnblockMe" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.UnblockMe" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#4CAF50</item>
         <item name="colorPrimaryDark">#388E3C</item>
         <item name="colorAccent">#FFC107</item>
