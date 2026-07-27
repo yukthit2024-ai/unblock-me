@@ -9,8 +9,9 @@ public class Block {
     public boolean isHorizontal;
     public int color;
     public boolean isTarget;
+    public boolean isObstacle;
 
-    public Block(String id, int x, int y, int length, boolean isHorizontal, int color, boolean isTarget) {
+    public Block(String id, int x, int y, int length, boolean isHorizontal, int color, boolean isTarget, boolean isObstacle) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -18,6 +19,7 @@ public class Block {
         this.isHorizontal = isHorizontal;
         this.color = color;
         this.isTarget = isTarget;
+        this.isObstacle = isObstacle;
     }
 
     public boolean contains(int gridX, int gridY) {
@@ -29,6 +31,6 @@ public class Block {
     }
 
     public Block copy() {
-        return new Block(id, x, y, length, isHorizontal, color, isTarget);
+        return new Block(id, x, y, length, isHorizontal, color, isTarget, isObstacle);
     }
 }

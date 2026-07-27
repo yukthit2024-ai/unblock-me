@@ -50,6 +50,7 @@ public class GameEngine {
     }
 
     public boolean canMoveTo(Block block, int newX, int newY) {
+        if (block.isObstacle) return false;
         if (newX < 0 || newY < 0) return false;
         if (block.isHorizontal) {
             if (newX + block.length > GRID_SIZE) return false;

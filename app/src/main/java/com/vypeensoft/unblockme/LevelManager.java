@@ -72,7 +72,7 @@ public class LevelManager {
                         boolean isTarget = carId.equals("X") || carId.equals("@");
                         int color = isTarget ? Color.RED : getColorForId(carId);
 
-                        level.addBlock(new Block(carId.equals("@") ? "X" : carId, x, y, length, horizontal, color, isTarget));
+                        level.addBlock(new Block(carId.equals("@") ? "X" : carId, x, y, length, horizontal, color, isTarget, false));
                     }
                     levels.add(level);
                 } else if (file.getName().toLowerCase().endsWith(".xml")) {
@@ -136,18 +136,17 @@ public class LevelManager {
                 }
             }
 
-            List<String> processedIds = new ArrayList<>();
+            boolean[][] processedGrid = new boolean[6][6];
             for (int y = 0; y < 6; y++) {
                 for (int x = 0; x < 6; x++) {
                     String cell = grid[y][x];
-                    if (cell != null && !cell.equals("0") && !processedIds.contains(cell)) {
-                        processedIds.add(cell);
+                    if (cell != null && !cell.equals("0") && !processedGrid[y][x]) {
                         
                         int length = 1;
                         boolean horizontal = true;
                         
                         for (int k = x + 1; k < 6; k++) {
-                            if (cell.equals(grid[y][k])) {
+                            if (cell.equals(grid[y][k]) && !processedGrid[y][k]) {
                                 length++;
                             } else {
                                 break;
@@ -156,7 +155,7 @@ public class LevelManager {
                         
                         if (length == 1) {
                             for (int k = y + 1; k < 6; k++) {
-                                if (cell.equals(grid[k][x])) {
+                                if (cell.equals(grid[k][x]) && !processedGrid[k][x]) {
                                     length++;
                                 } else {
                                     break;
@@ -167,11 +166,22 @@ public class LevelManager {
                             }
                         }
                         
-                        boolean isTarget = cell.equals("@") || cell.equals("X");
-                        int color = isTarget ? Color.RED : getColorForId(cell);
-                        String blockId = cell.equals("@") ? "X" : cell;
+                        if (horizontal) {
+                            for (int k = 0; k < length; k++) {
+                                processedGrid[y][x + k] = true;
+                            }
+                        } else {
+                            for (int k = 0; k < length; k++) {
+                                processedGrid[y + k][x] = true;
+                            }
+                        }
                         
-                        level.addBlock(new Block(blockId, x, y, length, horizontal, color, isTarget));
+                        boolean isTarget = cell.equals("@");
+                        boolean isObstacle = cell.equals("X");
+                        int color = isTarget ? Color.RED : (isObstacle ? Color.parseColor("#4B3621") : getColorForId(cell));
+                        String blockId = cell.equals("@") ? "X" : (isObstacle ? "X_" + x + "_" + y : cell);
+                        
+                        level.addBlock(new Block(blockId, x, y, length, horizontal, color, isTarget, isObstacle));
                     }
                 }
             }

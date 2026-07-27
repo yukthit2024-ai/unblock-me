@@ -127,6 +127,8 @@ public class GameView extends View {
             Bitmap bmpToDraw = null;
             if (b.isTarget) {
                 bmpToDraw = bmpTarget;
+            } else if (b.isObstacle) {
+                bmpToDraw = null;
             } else if (b.isHorizontal) {
                 bmpToDraw = (b.length == 3) ? bmpWoodH3 : bmpWoodH2;
             } else {
