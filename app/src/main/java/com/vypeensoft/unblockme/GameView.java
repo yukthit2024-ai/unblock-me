@@ -41,6 +41,7 @@ public class GameView extends View {
     private Bitmap bmpWoodH3;
     private Bitmap bmpWoodV2;
     private Bitmap bmpWoodV3;
+    private Bitmap bmpObstacle;
 
     public interface OnGameListener {
         void onMove();
@@ -59,6 +60,7 @@ public class GameView extends View {
             bmpWoodH3 = BitmapFactory.decodeStream(context.getAssets().open("tiles/wood/wood_block_h3.png"));
             bmpWoodV2 = BitmapFactory.decodeStream(context.getAssets().open("tiles/wood/wood_block_v2.png"));
             bmpWoodV3 = BitmapFactory.decodeStream(context.getAssets().open("tiles/wood/wood_block_v3.png"));
+            bmpObstacle = BitmapFactory.decodeStream(context.getAssets().open("tiles/wood/obstacle.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,7 +130,7 @@ public class GameView extends View {
             if (b.isTarget) {
                 bmpToDraw = bmpTarget;
             } else if (b.isObstacle) {
-                bmpToDraw = null;
+                bmpToDraw = bmpObstacle;
             } else if (b.isHorizontal) {
                 bmpToDraw = (b.length == 3) ? bmpWoodH3 : bmpWoodH2;
             } else {
@@ -136,7 +138,18 @@ public class GameView extends View {
             }
 
             if (bmpToDraw != null) {
-                canvas.drawBitmap(bmpToDraw, null, rect, paint);
+                if (b.isObstacle) {
+                    for (int i = 0; i < b.length; i++) {
+                        float cellLeft = (blockX + (b.isHorizontal ? i : 0)) * cellSize + 8;
+                        float cellTop = (blockY + (b.isHorizontal ? 0 : i)) * cellSize + 8;
+                        float cellRight = (blockX + (b.isHorizontal ? i + 1 : 1)) * cellSize - 8;
+                        float cellBottom = (blockY + (b.isHorizontal ? 1 : i + 1)) * cellSize - 8;
+                        RectF cellRect = new RectF(cellLeft, cellTop, cellRight, cellBottom);
+                        canvas.drawBitmap(bmpToDraw, null, cellRect, paint);
+                    }
+                } else {
+                    canvas.drawBitmap(bmpToDraw, null, rect, paint);
+                }
             } else {
                 // Fallback
                 paint.setColor(b.color);
